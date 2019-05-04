@@ -1,0 +1,8 @@
+// Place all the styles related to the list_items controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+input#list_item_user_id, input#list_item_title, input#list_item_description, textarea#list_item_link{
+  width: 250px;
+  height: 50px;
+}

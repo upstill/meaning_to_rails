@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user_id: 1
+  title: MyString
+  description: MyString
+  onHold: false
+  listCode: MyString
+  doneDate: 2019-05-02
+  link: MyText
+  suggested: false
+
+two:
+  user_id: 1
+  title: MyString
+  description: MyString
+  onHold: false
+  listCode: MyString
+  doneDate: 2019-05-02
+  link: MyText
+  suggested: false

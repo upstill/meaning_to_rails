@@ -1,0 +1,32 @@
+<%= form_for(list_type) do |f| %>
+  <% if list_type.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(list_type.errors.count, "error") %> prohibited this list_type from being saved:</h2>
+
+      <ul>
+      <% list_type.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :title %>
+    <%= f.text_area :title %>
+  </div>
+
+  <div class="field">
+    <%= f.label :noun %>
+    <%= f.text_field :noun_spec %>
+  </div>
+
+  <div class="field">
+    <%= f.label :verb %>
+    <%= f.text_field :verb_spec %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

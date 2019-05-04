@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @list_item.user_id %>
+</p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @list_item.title %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @list_item.description %>
+</p>
+
+<p>
+  <strong>Onhold:</strong>
+  <%= @list_item.onHold %>
+</p>
+
+<p>
+  <strong>Listcode:</strong>
+  <%= @list_item.listCode %>
+</p>
+
+<p>
+  <strong>Donedate:</strong>
+  <%= @list_item.doneDate %>
+</p>
+
+<p>
+  <strong>Link:</strong>
+  <%= @list_item.link %>
+</p>
+
+<p>
+  <strong>Suggested:</strong>
+  <%= @list_item.suggested %>
+</p>
+
+<%= link_to 'Edit', edit_list_item_path(@list_item) %> |
+<%= link_to 'Back', list_items_path %>

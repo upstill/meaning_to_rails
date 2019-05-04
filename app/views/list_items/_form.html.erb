@@ -1,0 +1,59 @@
+<%= form_for(list_item) do |f| %>
+  <% if list_item.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(list_item.errors.count, "error") %> prohibited this list_item from being saved:</h2>
+
+      <ul>
+      <% list_item.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+<!--
+  <div class="field">
+    <%#= f.label :user_id %>
+    <%#= f.number_field :user_id %>
+  </div>
+-->
+
+  <div class="field">
+    <%= f.label :list_type_id %>
+    <%= f.select(:list_type_id, ListType.all.collect {|t| [ t.title, t.id ] }, { include_blank: true } ) %>
+  </div>
+
+  <div class="field">
+    <%= f.label :title %>
+    <%= f.text_field :title %>
+  </div>
+
+  <div class="field">
+    <%= f.label :description %>
+    <%= f.text_field :description %>
+  </div>
+
+  <div class="field">
+    <%= f.label :link %>
+    <%= f.text_area :link %>
+  </div>
+
+<!--
+  <div class="field">
+    <%= f.check_box :onHold %>&nbsp;On Hold
+  </div>
+
+  <div class="field">
+    <%#= f.label :doneDate %>
+    <%#= f.date_select :doneDate %>
+  </div>
+
+  <div class="field">
+    <%= f.check_box :suggested %>&nbsp;Already Suggested
+  </div>
+-->
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

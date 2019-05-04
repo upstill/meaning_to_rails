@@ -1,0 +1,41 @@
+<p id="notice"><%= notice %></p>
+
+<h1>List Items</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Onhold</th>
+      <th>Listcode</th>
+      <th>Donedate</th>
+      <th>Link</th>
+      <th>Suggested</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @list_items.each do |list_item| %>
+      <tr>
+        <td><%= list_item.user_id %></td>
+        <td><%= list_item.title %></td>
+        <td><%= list_item.description %></td>
+        <td><%= list_item.onHold %></td>
+        <td><%= list_item.listCode %></td>
+        <td><%= list_item.doneDate %></td>
+        <td><%= list_item.link %></td>
+        <td><%= list_item.suggested %></td>
+        <td><%= link_to 'Show', list_item %></td>
+        <td><%= link_to 'Edit', edit_list_item_path(list_item) %></td>
+        <td><%= link_to 'Destroy', list_item, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New List Item', new_list_item_path %>
