@@ -1,4 +1,6 @@
 class ListTypesController < ApplicationController
+  before_action :doorkeeper_authorize!
+  # respond_to :json
   before_action :set_list_type, only: [:show, :edit, :update, :destroy]
 
   # GET /list_types
@@ -69,6 +71,6 @@ class ListTypesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def list_type_params
-      params.require(:list_type).permit(:title, :noun, :verb)
+      params.require(:list_type).permit(:title, :noun_spec, :verb_spec)
     end
 end

@@ -16,8 +16,8 @@
     <% @list_types.each do |list_type| %>
       <tr>
         <td><%= list_type.title %></td>
-        <td><%= list_type.noun %></td>
-        <td><%= list_type.verb %></td>
+        <td><%= list_type.noun_spec %></td>
+        <td><%= list_type.verb_spec %></td>
         <td><%= link_to 'Show', list_type %></td>
         <td><%= link_to 'Edit', edit_list_type_path(list_type) %></td>
         <td><%= link_to 'Destroy', list_type, method: :delete, data: { confirm: 'Are you sure?' } %></td>

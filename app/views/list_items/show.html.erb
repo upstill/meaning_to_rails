@@ -1,8 +1,15 @@
 <p id="notice"><%= notice %></p>
 
+<!--
 <p>
   <strong>User:</strong>
-  <%= @list_item.user_id %>
+  <%#= @list_item.user_id %>
+</p>
+-->
+
+<p>
+  <strong>List:</strong>
+  <%= @list_item.list_type.title %>
 </p>
 
 <p>
@@ -16,28 +23,12 @@
 </p>
 
 <p>
-  <strong>Onhold:</strong>
-  <%= @list_item.onHold %>
-</p>
-
-<p>
-  <strong>Listcode:</strong>
-  <%= @list_item.listCode %>
-</p>
-
-<p>
-  <strong>Donedate:</strong>
-  <%= @list_item.doneDate %>
-</p>
-
-<p>
   <strong>Link:</strong>
   <%= @list_item.link %>
 </p>
 
 <p>
-  <strong>Suggested:</strong>
-  <%= @list_item.suggested %>
+  <%= item_status @list_item %>
 </p>
 
 <%= link_to 'Edit', edit_list_item_path(@list_item) %> |

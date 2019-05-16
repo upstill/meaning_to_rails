@@ -25,6 +25,7 @@ class ListItemsController < ApplicationController
   # POST /list_items.json
   def create
     @list_item = ListItem.new(list_item_params)
+    @list_item.user = current_user
 
     respond_to do |format|
       if @list_item.save
@@ -69,6 +70,6 @@ class ListItemsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def list_item_params
-      params.require(:list_item).permit(:user_id, :list_id, :title, :description, :onHold, :doneDate, :link, :suggested)
+      params.require(:list_item).permit(:list_type_id, :title, :description, :link)
     end
 end
