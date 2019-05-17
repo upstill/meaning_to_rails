@@ -1,6 +1,4 @@
 class ListTypesController < ApplicationController
-  before_action :doorkeeper_authorize!
-  # respond_to :json
   before_action :set_list_type, only: [:show, :edit, :update, :destroy]
 
   # GET /list_types

@@ -58,3 +58,5 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'doorkeeper'
+gem 'oauth2'
+gem 'responders', '~> 2.4.1'
