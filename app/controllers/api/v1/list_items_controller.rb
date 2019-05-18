@@ -1,12 +1,18 @@
 module Api
   module V1
     class ListItemsController < ApplicationController
+      class ListItem < ::ListItem
+        def as_json(options={})
+          super.except *%w{ id user_id list_type_id created_at updated_at }
+        end
+      end
+      
       before_action :set_list_item, only: [:show, :edit, :update, :destroy]
       before_action :doorkeeper_authorize!
       respond_to :json
 
       def index
-        respond_with ListItem.where(user_id: doorkeeper_token.resource_owner_id)
+        respond_with current_user.list_items
       end
 
       def show
@@ -16,7 +22,7 @@ module Api
       # POST /list_items
       # POST /list_items.json
       def create
-        respond_with ListItem.create(list_item_params(user_id: doorkeeper_token.resource_owner_id))
+        respond_with current_user.list_items.create(list_item_params)
       end
 
       # PATCH/PUT /list_items/1
@@ -42,7 +48,10 @@ module Api
       def list_item_params extras={}
         params.require(:list_item).merge(extras).permit(:list_type_id, :user_id, :title, :description, :link)
       end
-
+      private
+      def current_user
+        @current_user ||= User.find(doorkeeper_token.resource_owner_id)
+      end
     end
   end
 end

@@ -2,6 +2,14 @@
 module Api
   module V1
     class ListTypesController < ApplicationController
+
+      # Define a version of the model class that limits the JSON report
+      class ListType < ::ListType
+        def as_json(options={})
+          super.except *%w{ created_at updated_at }
+        end
+      end
+
       before_action :set_list_type, only: [:show, :edit, :update, :destroy]
       before_action :doorkeeper_authorize!
       respond_to :json
