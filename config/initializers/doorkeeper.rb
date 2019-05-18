@@ -2,11 +2,19 @@ Doorkeeper.configure do
   # Change the ORM that doorkeeper will use (needs plugins)
   orm :active_record
 
+  resource_owner_from_credentials do |routes|
+    user = User.find_by_name(params[:username])
+    user if user && user.authenticate(params[:password])
+  end
+
   # This block will be called to check whether the resource owner is authenticated or not.
   resource_owner_authenticator do
     # Put your resource owner authentication logic here.
     # Example implementation:
-    User.find_by_id(session[:user_id]) || redirect_to(login_url)
+    # User.find_by_id(session[:user_id]) || redirect_to(login_url)
+    # Standard authentication logic (from sessions_controller)
+    user = User.find_by_name(params[:username])
+    user if user && user.authenticate(params[:password])
   end
 
   # If you didn't skip applications controller from Doorkeeper routes in your application routes.rb
@@ -29,7 +37,7 @@ Doorkeeper.configure do
   # want to use API mode that will skip all the views management and change the way how
   # Doorkeeper responds to a requests.
   #
-  # api_only
+  api_only
 
   # Enforce token request content type to application/x-www-form-urlencoded.
   # It is not enabled by default to not break prior versions of the gem.
@@ -180,7 +188,7 @@ Doorkeeper.configure do
   #   http://tools.ietf.org/html/rfc6819#section-4.4.2
   #   http://tools.ietf.org/html/rfc6819#section-4.4.3
   #
-  # grant_flows %w[authorization_code client_credentials]
+  grant_flows %w[authorization_code client_credentials password]
 
   # Hook into the strategies' request & response life-cycle in case your
   # application needs advanced customization or logging:

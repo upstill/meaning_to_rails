@@ -1,4 +1,5 @@
 class SessionsController < ApplicationController
+  protect_from_forgery with: :exception
   def new
     session[:return_to] = params[:return_to] if params[:return_to]
   end

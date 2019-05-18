@@ -1,4 +1,5 @@
 class ListItemsController < ApplicationController
+  protect_from_forgery with: :exception
   before_action :set_list_item, only: [:show, :edit, :update, :destroy]
 
   # GET /list_items

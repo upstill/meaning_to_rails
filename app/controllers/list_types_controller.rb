@@ -1,4 +1,5 @@
 class ListTypesController < ApplicationController
+  protect_from_forgery with: :exception
   before_action :set_list_type, only: [:show, :edit, :update, :destroy]
 
   # GET /list_types
