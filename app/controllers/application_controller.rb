@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_user
 
   def root
-    redirect_to (current_user ? '/list_items/index' : '/sessions/new')
+    redirect_to (current_user ? '/list_items' : '/sessions/new')
   end
 
 end

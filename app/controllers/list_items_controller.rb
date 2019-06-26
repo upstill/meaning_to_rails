@@ -5,7 +5,12 @@ class ListItemsController < ApplicationController
   # GET /list_items
   # GET /list_items.json
   def index
-    @list_items = ListItem.all
+    if current_user
+      @list_items = current_user.list_items
+    else
+      redirect_to '/sessions/new'
+    end
+
   end
 
   # GET /list_items/1

@@ -21,8 +21,9 @@ Rails.application.routes.draw do
   resources :list_items
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root to: 'application#root'
-  
+
   get 'auth/:provider/callback', to: 'sessions#create'
+  post 'auth/:provider/callback', to: 'sessions#create'
   get 'auth/failure', to: redirect('/')
   delete 'signout', to: 'sessions#destroy', as: 'signout'
   resources :identities
