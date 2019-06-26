@@ -3,7 +3,9 @@ Rails.application.routes.draw do
 
   namespace 'api', defaults: { format: 'json' } do
     namespace 'v1' do
-      resources :list_types
+      resources :list_types do
+        resources :list_items
+      end
       resources :list_items
     end
   end
@@ -13,8 +15,16 @@ Rails.application.routes.draw do
 
   resources :users
   resources :sessions
-  resources :list_types
+  resources :list_types do 
+    resources :list_items
+  end
   resources :list_items
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-  root to: 'list_items#index'
+  root to: 'application#root'
+  
+  get 'auth/:provider/callback', to: 'sessions#create'
+  get 'auth/failure', to: redirect('/')
+  delete 'signout', to: 'sessions#destroy', as: 'signout'
+  resources :identities
+
 end

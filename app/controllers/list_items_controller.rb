@@ -45,7 +45,7 @@ class ListItemsController < ApplicationController
     respond_to do |format|
       if @list_item.update(list_item_params)
         format.html { redirect_to @list_item, notice: 'List item was successfully updated.' }
-        format.json { render :show, status: :ok, location: @list_item }
+        format.json { render json: @list_item, status: :ok }
       else
         format.html { render :edit }
         format.json { render json: @list_item.errors, status: :unprocessable_entity }

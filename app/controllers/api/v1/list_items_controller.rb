@@ -12,7 +12,7 @@ module Api
       respond_to :json
 
       def index
-        respond_with current_user.list_items
+        respond_with current_user.list_items.where(list_type_id: params[:list_type_id])
       end
 
       def show
@@ -22,19 +22,37 @@ module Api
       # POST /list_items
       # POST /list_items.json
       def create
-        respond_with current_user.list_items.create(list_item_params)
+        lip = list_item_params list_type_id: params[:list_type_id]
+        new_item = current_user.list_items.create(lip)
+        respond_with new_item
       end
 
       # PATCH/PUT /list_items/1
       # PATCH/PUT /list_items/1.json
       def update
-        respond_with ListItem.update(params[:id], list_item_params)
+        respond_to do |format|
+          if @list_item.update(list_item_params)
+            format.html { redirect_to @list_item, notice: 'List item was successfully updated.' }
+            format.json { render json: @list_item, status: :ok }
+          else
+            format.html { render :edit }
+            format.json { render json: @list_item.errors, status: :unprocessable_entity }
+          end
+        end
       end
 
       # DELETE /list_items/1
       # DELETE /list_items/1.json
       def destroy
-        respond_with ListItem.destroy(params[:id])
+        respond_to do |format|
+          if @list_item.destroy
+            format.html { redirect_to @list_item, notice: 'List item was successfully destroyed.' }
+            format.json { render json: @list_item, status: :ok }
+          else
+            format.html { render :edit }
+            format.json { render json: @list_item.errors, status: :unprocessable_entity }
+          end
+        end
       end
 
       private
@@ -46,7 +64,7 @@ module Api
 
       # Never trust parameters from the scary internet, only allow the white list through.
       def list_item_params extras={}
-        params.require(:list_item).merge(extras).permit(:list_type_id, :user_id, :title, :description, :link)
+        params.require(:list_item).merge(extras).except(:id).permit(:list_type_id, :user_id, :title, :description, :link, :onHold, :suggested)
       end
       private
       def current_user
