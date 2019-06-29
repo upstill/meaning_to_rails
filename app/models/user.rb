@@ -25,4 +25,12 @@ class User < ApplicationRecord
       # user.password_digest = identity.password_digest # "$2a$10$8WfW//lsMTqySxVqyTGAZe506/r.8zJf/NbqKy8bVhSIISYwB14dS"
     end
   end
+
+  # Elide bcrypt authentication (which requires a password_digest attribute)
+  # by resorting to the user's omniauth Identity, if any
+  def authenticate_via_identity password
+    (provider == 'identity') &&
+    (id = Identity.find_by_id(uid)) &&
+    id.authenticate(password)
+  end
 end

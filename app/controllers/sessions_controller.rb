@@ -5,8 +5,8 @@ class SessionsController < ApplicationController
   end
 
   def create
-    user = User.find_by_name(params[:name])
-    if user && user.authenticate(params[:password])
+    user = User.find_by(name: (params[:name] || params[:username]))
+    if user && user.authenticate_via_identity(params[:password])
       session[:user_id] = user.id
       redirect_to(session.delete(:return_to) || root_url)
     elsif user = User.from_omniauth(env["omniauth.auth"])

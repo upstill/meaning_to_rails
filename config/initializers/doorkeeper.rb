@@ -3,8 +3,9 @@ Doorkeeper.configure do
   orm :active_record
 
   resource_owner_from_credentials do |routes|
-    user = User.find_by_name(params[:username])
-    user if user && user.authenticate(params[:password])
+    # Authenticate through the Identity record for the user
+    user = User.find_by_name params[:username]
+    user if user.try(:authenticate_via_identity, params[:password])
   end
 
   # This block will be called to check whether the resource owner is authenticated or not.
@@ -13,8 +14,9 @@ Doorkeeper.configure do
     # Example implementation:
     # User.find_by_id(session[:user_id]) || redirect_to(login_url)
     # Standard authentication logic (from sessions_controller)
-    user = User.find_by_name(params[:username])
-    user if user && user.authenticate(params[:password])
+    # user = User.find_by_name(params[:name])
+    # user if user && user.authenticate(params[:password])
+    User.find_by_id(session[:user_id]) || redirect_to(sign_in_url(return_to: request.fullpath))
   end
 
   # If you didn't skip applications controller from Doorkeeper routes in your application routes.rb
