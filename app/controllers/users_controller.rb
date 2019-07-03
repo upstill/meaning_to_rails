@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  protect_from_forgery with: :exception
+  protect_from_forgery with: :exception, except: [:new, :create]
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   # GET /users
