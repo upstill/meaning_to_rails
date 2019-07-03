@@ -1,8 +1,15 @@
 <p id="notice"><%= notice %></p>
 
 <h1>List Items</h1>
-
-<table>
+<form class="select_list_item" id="select_list_item" action="/list_items">
+  Show items from list:
+  <select name="list_type_id" onchange="this.form.submit()">
+    <option value>all items</option>
+    <%= options_from_collection_for_select(ListType.all, "id", "title", @list_type.try(:id)) %>
+  </select>
+</form>
+<br>
+<table class="list_items">
   <thead>
     <tr>
       <th>List</th>
