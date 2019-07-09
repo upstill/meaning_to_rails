@@ -43,7 +43,8 @@ class ListTypesController < ApplicationController
   def update
     respond_to do |format|
       if @list_type.update(list_type_params)
-        format.html { redirect_to @list_type, notice: 'List type was successfully updated.' }
+        # If there's a file import specified, try to parse it into provisional items
+        format.html { redirect_to list_items_path(list_type_id: @list_type.id), notice: 'List type was successfully updated.' }
         format.json { render :show, status: :ok, location: @list_type }
       else
         format.html { render :edit }
@@ -70,6 +71,6 @@ class ListTypesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def list_type_params
-      params.require(:list_type).permit(:title, :noun_spec, :verb_spec)
+      params.require(:list_type).permit(:title, :noun_spec, :verb_spec, :import)
     end
 end

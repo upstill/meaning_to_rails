@@ -1,10 +1,10 @@
 module ListItemsHelper
 
   def item_status item
-    [
-        ((item.onHold ? '' : 'Not') + ' on Hold'),
+    safe_join [
+        ((item.onHold ? 'On' : 'Not On') + ' Hold'),
         (item.doneDate ? "Done #{item.doneDate}" : "Not Done"),
-        (item.suggested ? '' : 'Not') + ' already Suggested'
-    ].join(', ') + '.'
+        (item.suggested ? 'Already' : 'Not Already') + ' Suggested'
+    ], tag(:br)
   end
 end

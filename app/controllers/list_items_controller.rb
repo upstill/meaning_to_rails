@@ -5,10 +5,9 @@ class ListItemsController < ApplicationController
   # GET /list_items
   # GET /list_items.json
   def index
-    @list_type = ListType.find_by id: params[:list_type_id]
+    @list_type = (ListType.find_by id: params[:list_type_id]) || ListType.first
     if current_user
-      @list_items = current_user.list_items
-      @list_items = @list_items.where(list_type_id: @list_type.id) if @list_type
+      @list_items = current_user.list_items.where(list_type_id: @list_type.id)
     else
       redirect_to '/sessions/new'
     end

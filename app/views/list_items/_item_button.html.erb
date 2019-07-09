@@ -1,0 +1,7 @@
+<form data-type="json" class="item_button" method="post" action="/list_items", data-remote="true">
+  <input label="Accept" type="submit" value="create">
+  <% item_to_import.attributes.slice('list_type_id', 'title', 'description', 'link').each do |key, val| %>
+      <input type="hidden" name="list_item[<%= key %>]" value="<%= h val %>">
+  <% end %>
+  <%= csrf_meta_tag %>
+</form>
