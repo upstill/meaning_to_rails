@@ -1,5 +1,5 @@
 <form class="item_button" method="post" action="/list_items", data-remote="true">
-  <input label="Add" type="submit" value="create">
+  <input label="Accept" type="submit" value="Create" class="btn btn-success" style="font-size:14px;padding:.1rem .75rem">
   <% item_to_import.attributes.slice(*%w{ user_id list_type_id title description link }).each do |key, val| %>
       <input type="hidden" name="list_item[<%= key %>]" value="<%= h val %>">
   <% end %>

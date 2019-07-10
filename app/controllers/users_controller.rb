@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   protect_from_forgery with: :exception, except: [:new, :create]
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only: [:show, :edit, :update, :destroy, :clear_imports ]
 
   # GET /users
   # GET /users.json
@@ -27,7 +27,6 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     User.create_with_omniauth
-
     respond_to do |format|
       if @user.save
         format.html { redirect_to @user, notice: 'User was successfully created.' }
@@ -36,6 +35,21 @@ class UsersController < ApplicationController
         format.html { render :new }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
+    end
+  end
+
+  def clear_imports
+    # Clear the imports buffer, optionally accepting all pending
+    if params['accept'] == 'true' && @user.imports.present?
+      @user.imports.each { |li| @user.list_items << li }
+    end
+    redirect = list_items_path(list_type_id: @user.import_type_id)
+    @user.import_type = nil
+    @user.import = nil
+    @user.save
+    respond_to do |format|
+      format.html { redirect_to redirect, notice: 'List items were successfully imported.' }
+      format.json {render :show, status: :ok, location: @user}
     end
   end
 

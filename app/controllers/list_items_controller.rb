@@ -21,7 +21,7 @@ class ListItemsController < ApplicationController
 
   # GET /list_items/new
   def new
-    @list_item = ListItem.new
+    @list_item = ListItem.new list_type_id: params['list_type_id'], user: current_user
   end
 
   # GET /list_items/1/edit

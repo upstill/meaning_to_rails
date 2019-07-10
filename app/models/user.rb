@@ -56,4 +56,8 @@ class User < ApplicationRecord
                    }.compact
                  end
   end
+
+  def imports= ilist
+    @imports = ilist
+  end
 end

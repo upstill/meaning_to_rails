@@ -24,41 +24,34 @@
 </table>
 
 <br>
-<% if !@list_type %>
-  <h4> Select a type of list above to import items from your computer</h4>
-<% else %>
-  <h4> To import list items from your computer, click 'Choose File' then 'Import Items'</h4>
-  <%= form_for current_user do |f| %>
-    <%= f.file_field :import %>
-    <%= f.submit 'Import Items' %>
-  <% end %>
-  <% if current_user.import_type == @list_type && current_user.imports %>
-    <h3>Items ready for import</h3>
-    <table class="imports">
-      <thead>
-      <tr>
-        <th>Title</th>
-        <th>Link</th>
-        <th>Description</th>
-        <th colspan="3"></th>
-      </tr>
-      </thead>
 
+<a class="btn btn-primary" style="font-size:1.5em" href="<%= new_list_item_path(list_type_id: @list_type.id) %>" role="button">New List Item</a>
+<hr><br>
+  <% if current_user.import_type == @list_type && current_user.imports.present? %>
+    <h1>Items ready for import</h1>
+    <table class="table table-striped">
       <tbody>
       <% current_user.imports.each do |item_to_import| %>
         <tr>
-          <td><strong><%= item_to_import.title %></strong></td>
-          <td><%= item_to_import.link %></td>
-          <td><%= item_to_import.description %></td>
+          <td>
+            <h3><strong><%= item_to_import.title %></strong></h3>
+            <% if item_to_import.description.present? %>
+              &nbsp;&nbsp;<%= item_to_import.description %><br>
+            <% end %>
+            &nbsp;&nbsp;<%= item_to_import.link %>
+          </td>
           <td><%= render "item_button", item_to_import: item_to_import %>
           </td>
         </tr>
       <% end %>
       </tbody>
     </table>
+    <%= button_to 'Accept All', clear_imports_path(id: current_user.id, accept: true), { form: { style: 'display:inline-block;' }, method: 'POST', class: 'btn btn-success', style: "font-size:1.5em" } %>
+    &nbsp;&nbsp;<%= button_to 'Clear', clear_imports_path(id: current_user.id, accept: true), { form: { style: 'display:inline-block;' }, method: 'POST', class: 'btn btn-danger', style: "font-size:1.5em" } %>
+  <% else %>
+    <h4> To import list items from your computer, click 'Choose File' then 'Import Items'</h4>
+    <%= form_for current_user do |f| %>
+      <%= f.file_field :import %>
+      <%= f.submit 'Import Items' %>
+    <% end %>
   <% end %>
-<% end %>
-
-<br>
-
-<%= link_to 'New List Item', new_list_item_path %>

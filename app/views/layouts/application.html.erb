@@ -39,7 +39,7 @@
           <% end %>
         </ul>
       </nav>
-      <% if current_user %>
+      <% if current_user && @list_type %>
         <h1 class="text-muted"><%= @list_type.noun true %> for <%= current_user.name %> to <%= @list_type.verb %></h1>
       <% end %>
     </div>

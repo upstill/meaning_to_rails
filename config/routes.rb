@@ -10,10 +10,11 @@ Rails.application.routes.draw do
     end
   end
   get 'signup', to: 'users#new', as: 'signup'
-  get 'login', to: 'sessions#new', as: 'sign_in'
-  get 'logout', to: 'sessions#destroy', as: 'logout'
 
   resources :users
+  get 'login', to: 'sessions#new', as: 'sign_in'
+  get 'logout', to: 'sessions#destroy', as: 'logout'
+  post 'clear_imports', to: 'users#clear_imports'
   resources :sessions
   resources :list_types do 
     resources :list_items
