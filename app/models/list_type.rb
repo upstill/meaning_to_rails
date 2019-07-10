@@ -1,5 +1,4 @@
 class ListType < ApplicationRecord
-  mount_uploader :import, ImportUploader # Tells rails to use this uploader for this model.
 
   def noun plural=false
     n = noun_spec.if_present || title.split[2..-1].join(' ')

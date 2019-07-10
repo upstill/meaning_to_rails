@@ -1,7 +1,15 @@
 class User < ApplicationRecord
+  # A user holds an import file pending acceptance of the items therefrom
+  mount_uploader :import, ImportUploader # Tells rails to use this uploader for this model.
+  belongs_to :import_type, class_name: 'ListType'
+  
   # attr_accessible :name, :password, :password_confirmation
   # has_secure_password
   has_many :list_items
+
+  def items_from_list list_type
+    list_items.where list_type: list_type
+  end
 
   # Find (or create, if not priorly existing) a user from the response to an omniauth login
   def self.from_omniauth(auth)
@@ -32,5 +40,20 @@ class User < ApplicationRecord
     (provider == 'identity') &&
     (id = Identity.find_by_id(uid)) &&
     id.authenticate(password)
+  end
+
+  # What are the items pending in the imports list?
+  def imports
+    @imports ||= if import && (contents = import.read)
+                   contents.split("\n").collect { |line|
+                     fields = line.split("\t");
+                     item = ListItem.find_or_initialize_by(
+                         list_type_id: import_type_id,
+                         user_id: id,
+                         title: fields.shift
+                     )
+                     item.import(fields) unless item.persisted? # No redundancy, please!
+                   }.compact
+                 end
   end
 end

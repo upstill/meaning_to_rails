@@ -44,7 +44,13 @@ class UsersController < ApplicationController
   def update
     respond_to do |format|
       if @user.update(user_params)
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
+        format.html {
+          if user_params['import'].present?
+            redirect_to list_items_path(list_type_id: @user.import_type_id), notice: 'List items were successfully imported.'
+          else
+            redirect_to @user, notice: 'User was successfully updated.'
+          end
+        }
         format.json { render :show, status: :ok, location: @user }
       else
         format.html { render :edit }
@@ -71,6 +77,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:name, :password, :password_confirmation, :password_digest)
+      params.require(:user).permit(:name, :password, :password_confirmation, :password_digest, :import)
     end
 end

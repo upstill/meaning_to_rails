@@ -28,11 +28,11 @@
   <h4> Select a type of list above to import items from your computer</h4>
 <% else %>
   <h4> To import list items from your computer, click 'Choose File' then 'Import Items'</h4>
-  <%= form_for @list_type do |f| %>
+  <%= form_for current_user do |f| %>
     <%= f.file_field :import %>
     <%= f.submit 'Import Items' %>
   <% end %>
-  <% if @list_type.imports(current_user.id) %>
+  <% if current_user.import_type == @list_type && current_user.imports %>
     <h3>Items ready for import</h3>
     <table class="imports">
       <thead>
@@ -45,7 +45,7 @@
       </thead>
 
       <tbody>
-      <% @list_type.imports(current_user.id).each do |item_to_import| %>
+      <% current_user.imports.each do |item_to_import| %>
         <tr>
           <td><strong><%= item_to_import.title %></strong></td>
           <td><%= item_to_import.link %></td>
