@@ -32,11 +32,10 @@ class ListItemsController < ApplicationController
   # POST /list_items.json
   def create
     @list_item = ListItem.new(list_item_params)
-    @list_item.user = current_user
-
     respond_to do |format|
       if @list_item.save
-        format.html { redirect_to @list_item, notice: 'List item was successfully created.' }
+        # format.html { redirect_to @list_item, notice: 'List item was successfully created.' }
+        format.html { redirect_to list_items_path(list_type_id: @list_item.list_type_id), notice: 'List item was successfully added.' }
         format.json { render :show, status: :created, location: @list_item }
       else
         format.html { render :new }
@@ -77,6 +76,6 @@ class ListItemsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def list_item_params
-      params.require(:list_item).permit(:list_type_id, :title, :description, :link)
+      params.require(:list_item).permit(:user_id, :list_type_id, :title, :description, :link)
     end
 end

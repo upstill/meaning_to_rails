@@ -17,6 +17,9 @@
 
   <body>
   <div class="container">
+    <div class="brand" style="margin:40px">
+      <%= image_tag 'Logo.png' %>
+    </div>
     <div class="header clearfix">
       <nav>
         <ul class="nav nav-pills pull-right">
@@ -37,7 +40,7 @@
         </ul>
       </nav>
       <% if current_user %>
-        <h3 class="text-muted"><%= @list_type.noun true %> for <%= current_user.name %> to <%= @list_type.verb %></h3>
+        <h1 class="text-muted"><%= @list_type.noun true %> for <%= current_user.name %> to <%= @list_type.verb %></h1>
       <% end %>
     </div>
     <%= yield %>
