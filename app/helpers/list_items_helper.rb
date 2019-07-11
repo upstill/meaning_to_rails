@@ -2,9 +2,9 @@ module ListItemsHelper
 
   def item_status item
     safe_join [
-        ((item.onHold ? 'On' : 'Not On') + ' Hold'),
-        (item.doneDate ? "Done #{item.doneDate}" : "Not Done"),
-        (item.suggested ? 'Already' : 'Not Already') + ' Suggested'
-    ], tag(:br)
+        ('On Hold' if item.onHold),
+        ("Done #{item.doneDate}" if item.doneDate),
+        ('Suggested' if item.suggested)
+    ].compact, tag(:br)
   end
 end

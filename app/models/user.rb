@@ -8,7 +8,7 @@ class User < ApplicationRecord
   has_many :list_items
 
   def items_from_list list_type
-    list_items.where list_type: list_type
+    list_items.where(list_type: list_type).order :title
   end
 
   # Find (or create, if not priorly existing) a user from the response to an omniauth login
@@ -44,17 +44,17 @@ class User < ApplicationRecord
 
   # What are the items pending in the imports list?
   def imports
-    @imports ||= if import && (contents = import.read)
-                   contents.split("\n").collect { |line|
-                     fields = line.split("\t");
-                     item = ListItem.find_or_initialize_by(
-                         list_type_id: import_type_id,
-                         user_id: id,
-                         title: fields.shift
-                     )
-                     item.import(fields) unless item.persisted? # No redundancy, please!
-                   }.compact
-                 end
+    return @imports if @imports
+    (self.import_contents = import.read rescue nil) if import
+    import_contents.split("\n").collect {|line|
+      fields = line.split("\t");
+      item = ListItem.find_or_initialize_by(
+          list_type_id: import_type_id,
+          user_id: id,
+          title: fields.shift
+      )
+      item.import(fields) unless item.persisted? # No redundancy, please!
+    }.compact if import_contents.present?
   end
 
   def imports= ilist

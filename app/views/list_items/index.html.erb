@@ -7,51 +7,49 @@
     <tr>
       <td>
         <h3><strong><%= list_item.title %></strong></h3>
-        <% if list_item.description.present? %>
-          &nbsp;&nbsp;<%= list_item.description %><br>
-        <% end %>
-        &nbsp;&nbsp;<%= list_item.link %>
+      &nbsp;&nbsp;<%= list_item.description.if_present %>
+      &nbsp;&nbsp;<%= list_item.link.if_present %>
       </td>
       <td><%= item_status list_item %></td>
       <td>
-        <%= link_to 'Show', list_item %>
-        <br><%= link_to 'Edit', edit_list_item_path(list_item) %>
-        <br><%= link_to 'Destroy', list_item, method: :delete, data: {confirm: 'Are you sure?'} %>
+        <%= link_to 'Edit...', edit_list_item_path(list_item), class: 'btn btn-primary', style: 'margin-bottom: 5px;color:white' %>
+        <%= button_to 'Destroy', list_item, class: 'btn btn-danger', method: :delete, data: {confirm: 'Are you sure?'} %>
       </td>
     </tr>
   <% end %>
   </tbody>
 </table>
-
-<br>
-
-<a class="btn btn-primary" style="font-size:1.5em" href="<%= new_list_item_path(list_type_id: @list_type.id) %>" role="button">New List Item</a>
+<a class="btn btn-primary"
+   style="font-size:14pt;color:white;"
+   href="<%= new_list_item_path(list_item: { list_type_id: @list_type.id, user_id: current_user.id } ) %>"
+   role="button">New <%= @list_type.noun %>...</a>
 <hr><br>
   <% if current_user.import_type == @list_type && current_user.imports.present? %>
-    <h1>Items ready for import</h1>
+    <h1><%= @list_type.noun true %> ready to add</h1>
+    Click 'Add' on any one, or 'Add All' below.
     <table class="table table-striped">
       <tbody>
       <% current_user.imports.each do |item_to_import| %>
         <tr>
           <td>
             <h3><strong><%= item_to_import.title %></strong></h3>
-            <% if item_to_import.description.present? %>
-              &nbsp;&nbsp;<%= item_to_import.description %><br>
-            <% end %>
-            &nbsp;&nbsp;<%= item_to_import.link %>
+            <%= item_to_import.description.if_present %>
+            <%= item_to_import.link.if_present %>
           </td>
-          <td><%= render "item_button", item_to_import: item_to_import %>
+          <td><%= render 'item_button', item_to_import: item_to_import %>
           </td>
         </tr>
       <% end %>
       </tbody>
     </table>
-    <%= button_to 'Accept All', clear_imports_path(id: current_user.id, accept: true), { form: { style: 'display:inline-block;' }, method: 'POST', class: 'btn btn-success', style: "font-size:1.5em" } %>
-    &nbsp;&nbsp;<%= button_to 'Clear', clear_imports_path(id: current_user.id, accept: true), { form: { style: 'display:inline-block;' }, method: 'POST', class: 'btn btn-danger', style: "font-size:1.5em" } %>
+    <%= button_to 'Add All', clear_imports_path(id: current_user.id, accept: true), { form: { style: 'display:inline-block;' }, method: 'POST', class: 'btn btn-success', style: "font-size:14pt" } %>
+  &nbsp;&nbsp;<%= button_to 'Clear', clear_imports_path(id: current_user.id, accept: false), { form: { style: 'display:inline-block;' }, method: 'POST', class: 'btn btn-danger', style: "font-size:14pt" } %>
   <% else %>
-    <h4> To import list items from your computer, click 'Choose File' then 'Import Items'</h4>
+    <h4> To import list items from your computer, click 'Choose File'</h4>
     <%= form_for current_user do |f| %>
-      <%= f.file_field :import %>
-      <%= f.submit 'Import Items' %>
+      <%= f.hidden_field :import_type_id, value: @list_type.id %>
+      <%= f.hidden_field :user_id, value: current_user.id %>
+      <%= f.file_field :import, onchange: 'this.form.submit()', class: 'btn btn-info' %>
+      <%# f.submit 'Import Items' %>
     <% end %>
   <% end %>

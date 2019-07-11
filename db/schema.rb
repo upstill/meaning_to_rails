@@ -92,11 +92,12 @@ ActiveRecord::Schema.define(version: 20190710154805) do
 
   create_table "users", force: :cascade do |t|
     t.string   "name"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
     t.string   "provider"
     t.string   "uid"
     t.string   "import"
+    t.text     "import_contents"
     t.integer  "import_type_id"
   end
 

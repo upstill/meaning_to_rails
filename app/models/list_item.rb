@@ -2,8 +2,12 @@ class ListItem < ApplicationRecord
   belongs_to :user
   belongs_to :list_type
 
+  # There must be a title
   validates :title, presence: true
-  validates :list_type_id, presence: { message: 'must show a list for it to go on.' }
+  # ...and it must be unique within the owner and the type of list
+  validates :title, uniqueness: { scope: [:user_id, :list_type_id],
+                                 message: "must be unique" }
+  validates :list_type_id, presence: { message: 'must be included in a list.' }
 
   # Extract item data from an array of fields, where the title has already been extracted
   def import fields, title_too=false

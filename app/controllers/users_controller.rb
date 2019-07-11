@@ -40,15 +40,16 @@ class UsersController < ApplicationController
 
   def clear_imports
     # Clear the imports buffer, optionally accepting all pending
-    if params['accept'] == 'true' && @user.imports.present?
+    if params['accept'] == 'true'
+      @user.import_contents = nil if @user.imports.present? # Setup for file read into the contents
       @user.imports.each { |li| @user.list_items << li }
     end
     redirect = list_items_path(list_type_id: @user.import_type_id)
-    @user.import_type = nil
-    @user.import = nil
+    @user.import_type = @user.import_contents = nil
+    @user.remove_import!
     @user.save
     respond_to do |format|
-      format.html { redirect_to redirect, notice: 'List items were successfully imported.' }
+      format.html { redirect_to redirect, notice: 'Candidate imports were cleared.' }
       format.json {render :show, status: :ok, location: @user}
     end
   end
@@ -60,14 +61,20 @@ class UsersController < ApplicationController
       if @user.update(user_params)
         format.html {
           if user_params['import'].present?
-            redirect_to list_items_path(list_type_id: @user.import_type_id), notice: 'List items were successfully imported.'
+            redirect_to list_items_path(list_type_id: @user.import_type_id), notice: 'File was read. Go to the bottom of the page to finish importing.'
           else
             redirect_to @user, notice: 'User was successfully updated.'
           end
         }
         format.json { render :show, status: :ok, location: @user }
       else
-        format.html { render :edit }
+        format.html {
+          if user_params['import'].present?
+            redirect_to list_items_path(list_type_id: @user.import_type_id), notice: "File couldn't be imported. We can only understand text files."
+          else
+            render :edit
+          end
+        }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
@@ -91,6 +98,8 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:name, :password, :password_confirmation, :password_digest, :import)
+      params.
+          require(:user).
+          permit :name, :password, :password_confirmation, :password_digest, :import, :import_type_id, :import_contents
     end
 end
