@@ -7,15 +7,15 @@ end
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.0.1'
+gem 'rails', '~> 5.1.1'
 # Use postgresql # sqlite3 as the database for Active Record
 ####### Ruby interface to PostgreSQL https://bitbucket.org/ged/ruby-pg/wiki/Home
 # gem 'sqlite3'
-gem 'pg' # , '0.20' 
+gem 'pg', '1.0.0' # , '0.20' 
 # Use Puma as the app server
 gem 'puma', '~> 3.0'
 # Use SCSS for stylesheets
-gem 'sass-rails', '~> 5.0'
+# gem 'sass-rails' # , '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .coffee assets and views
@@ -58,6 +58,7 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'carrierwave', '~> 1.3.1'
+gem 'sassc-rails'
 gem 'bootstrap-sass', '~> 3.4.1'
 gem "bootstrap_form", ">= 4.2.0"
 
