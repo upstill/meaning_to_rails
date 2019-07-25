@@ -10,13 +10,13 @@ class SessionsController < ApplicationController
     if user && user.authenticate_via_identity(params[:password])
       session[:user_id] = user.id
       rdr = session.delete(:return_to) || root_url
-    elsif user = User.from_omniauth(env["omniauth.auth"])
+    elsif user = User.from_omniauth(request.env["omniauth.auth"])
       session[:user_id] = user.id
       rdr = root_url
     end
     if user
       respond_to do |format|
-        format.html { redirect_to rdr, notice: "Signed in!", status: :created }
+        format.html { redirect_to rdr, notice: "Signed in as #{user.name}!", status: :created }
         format.json { render user, status: :created }
       end
     else
