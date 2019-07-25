@@ -61,7 +61,10 @@ class UsersController < ApplicationController
       if @user.update(user_params)
         format.html {
           if user_params['import'].present?
-            redirect_to list_items_path(list_type_id: @user.import_type_id), notice: 'File was read. Go to the bottom of the page to finish importing.'
+            notice = @user.imports.present? ?
+                         'File was read. Go to the bottom of the page to finish importing.' :
+                         'Nothing could be read from the file. The subject must appear first on a line (no tabs before), and it must be unique.'
+            redirect_to list_items_path(list_type_id: @user.import_type_id), notice: notice
           else
             redirect_to @user, notice: 'User was successfully updated.'
           end

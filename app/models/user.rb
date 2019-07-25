@@ -46,21 +46,26 @@ class User < ApplicationRecord
   # What are the items pending in the imports list?
   def imports
     return @imports if @imports
-    if import &&
-        import.attached? &&
+    if import&.attached? &&
         (self.import_contents = import.download rescue nil)
-      @imports =
-          import_contents.
-              split("\n").
-              collect {|line|
-                fields = line.split("\t");
-                item = ListItem.find_or_initialize_by(
-                    list_type_id: import_type_id,
-                    user_id: id,
-                    title: fields.shift
-                )
-                item.import(fields) unless item.persisted? # No redundancy, please!
-              }.compact
+      line_hash = { }
+      import_contents.split("\n").each { |line|
+        fields = line.split "\t"
+        next if (title = fields.first.strip.gsub /\s+/, ' ').blank?
+        line_hash[title] = fields[1..-1]
+      }
+      titles = line_hash.keys
+      titles -=
+          ListItem.where(list_type_id: import_type_id,
+                         user_id: id,
+                         title: titles).pluck :title
+      @imports = titles.collect { |title|
+        ListItem.new(
+            list_type_id: import_type_id,
+            user_id: id,
+            title: title
+        ).import line_hash[title]
+      }
     end
   end
 

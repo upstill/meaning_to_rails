@@ -26,7 +26,8 @@
 <hr><br>
   <% if current_user.import_type == @list_type && current_user.imports.present? %>
     <h1><%= @list_type.noun true %> ready to add</h1>
-    Click 'Add' on any one, or 'Add All' below.
+    <p>Click 'Add' on any one, or 'Add All' below.</p>
+    <p>Note: only new <%= @list_type.noun true %> are shown--and all items must have a subject to be shown.</p>
     <table class="table table-striped">
       <tbody>
       <% current_user.imports.each do |item_to_import| %>
