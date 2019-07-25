@@ -46,7 +46,7 @@ class UsersController < ApplicationController
     end
     redirect = list_items_path(list_type_id: @user.import_type_id)
     @user.import_type = @user.import_contents = nil
-    @user.remove_import!
+    @user.import.purge_later # Nuke the import
     @user.save
     respond_to do |format|
       format.html { redirect_to redirect, notice: 'Candidate imports were cleared.' }

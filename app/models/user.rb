@@ -46,16 +46,22 @@ class User < ApplicationRecord
   # What are the items pending in the imports list?
   def imports
     return @imports if @imports
-    (self.import_contents = import.read rescue nil) if import
-    import_contents.split("\n").collect {|line|
-      fields = line.split("\t");
-      item = ListItem.find_or_initialize_by(
-          list_type_id: import_type_id,
-          user_id: id,
-          title: fields.shift
-      )
-      item.import(fields) unless item.persisted? # No redundancy, please!
-    }.compact if import_contents.present?
+    if import &&
+        import.attached? &&
+        (self.import_contents = import.download rescue nil)
+      @imports =
+          import_contents.
+              split("\n").
+              collect {|line|
+                fields = line.split("\t");
+                item = ListItem.find_or_initialize_by(
+                    list_type_id: import_type_id,
+                    user_id: id,
+                    title: fields.shift
+                )
+                item.import(fields) unless item.persisted? # No redundancy, please!
+              }.compact
+    end
   end
 
   def imports= ilist
