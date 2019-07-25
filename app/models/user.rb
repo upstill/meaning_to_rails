@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   # A user holds an import file pending acceptance of the items therefrom
-  mount_uploader :import, ImportUploader # Tells rails to use this uploader for this model.
+  # mount_uploader :import, ImportUploader # Tells rails to use this uploader for this model.
+  has_one_attached :import
   belongs_to :import_type, class_name: 'ListType', optional: true
   
   # attr_accessible :name, :password, :password_confirmation
