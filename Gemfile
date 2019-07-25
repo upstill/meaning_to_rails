@@ -60,6 +60,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'carrierwave', '~> 1.3.1'
 gem 'sassc-rails'
+gem 'bootsnap'
 gem 'bootstrap-sass', '~> 3.4.1'
 gem "bootstrap_form", ">= 4.2.0"
 
